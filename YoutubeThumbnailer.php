@@ -3,17 +3,8 @@ class YoutubeThumbnailer
 {
   public function YoutubeThumbnailer($input)
   {
-    $this->input = $input;
-  }
-
-  public function addHTTP()
-  {
-    if ($this->inputStartsLikeURL())
-    {
-      $this->input = "http://" . $this->input;
-    }
-
-    return $this;
+    $this->input = trim($input);
+    $this->inputAddHTTP();
   }
 
   public function isURL()
@@ -41,6 +32,14 @@ class YoutubeThumbnailer
     $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i';
     preg_match($pattern, $url, $matches);
     return isset($matches[1]) ? $matches[1] : false;
+  }
+
+  private function addHTTP()
+  {
+    if ($this->inputStartsLikeURL())
+    {
+      $this->input = "http://" . $this->input;
+    }
   }
 
   private function inputStartsLikeURL()

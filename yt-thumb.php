@@ -31,19 +31,11 @@ include './YoutubeThumbnailer.php';
 $is_url 				= false;
 $quality 				= $_REQUEST['quality'];
 $quality 				= ($quality == "hq") ? "hq" : "mq";
-$inpt 					= trim($_REQUEST['inpt']);
 $show_play_icon			= isset($_REQUEST['play']) ? true : false;
 $play_btn_file_name 	= ($show_play_icon) ? "-play" : "";
 
 
-$thumbnailer = new YoutubeThumbnailer($inpt);
-
-$thumbnailer->addHTTP();
-if ($thumbnailer->isURL())
-{
-  $inpt = $thumbnailer->input;
-}
-
+$thumbnailer = new YoutubeThumbnailer($_REQUEST['inpt']);
 $id = $thumbnailer->getID();
 
 

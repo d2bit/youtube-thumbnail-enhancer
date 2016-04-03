@@ -14,7 +14,7 @@ class YoutubeThumbnailerTest extends PHPUnit_Framework_TestCase
       $url = $urlArray[$i];
       $thumbnailer = new YoutubeThumbnailer($url);
 
-      $this->assertEquals("http://" . $url, $thumbnailer->addHTTP()->input);
+      $this->assertEquals("http://" . $url, $thumbnailer->input);
       $this->assertTrue($thumbnailer->isURL());
     }
   }
@@ -24,7 +24,7 @@ class YoutubeThumbnailerTest extends PHPUnit_Framework_TestCase
     $httpUrl = "http://www.youtube.com/watch?v=XZ4X1wcZ1GE";
     $thumbnailer = new YoutubeThumbnailer($httpUrl);
 
-    $this->assertEquals($httpUrl, $thumbnailer->addHTTP()->input);
+    $this->assertEquals($httpUrl, $thumbnailer->input);
   }
 
   public function testGetID()
@@ -32,7 +32,6 @@ class YoutubeThumbnailerTest extends PHPUnit_Framework_TestCase
     $youtubeId = "XZ4X1wcZ1GE";
     $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
     $thumbnailer = new YoutubeThumbnailer($httpUrl);
-    $thumbnailer->addHTTP();
 
     $this->assertEquals($youtubeId, $thumbnailer->getID());
   }
