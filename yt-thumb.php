@@ -24,6 +24,7 @@
  *
  */
 
+include './YoutubeThumbnailer.php';
 
 // GET YOUTUBE ID FROM THE SLEW OF YOUTUBE URLS 
 // (FOUND ON STACKEXCHANGE SOMEWHERE)
@@ -44,10 +45,13 @@ $show_play_icon			= isset($_REQUEST['play']) ? true : false;
 $play_btn_file_name 	= ($show_play_icon) ? "-play" : "";
 
 
-// ADD HTTP
-if(substr($inpt, 0, 4) == "www."){ $inpt = "http://" . $inpt; $is_url = true; }
-if(substr($inpt, 0, 8) == "youtube."){ $inpt = "http://" . $inpt; $is_url = true; }
-if(substr($inpt, 0, 8) == "youtu.be"){ $inpt = "http://" . $inpt; $is_url = true; }
+$thumbnailer = new YoutubeThumbnailer($inpt);
+
+$thumbnailer->addHTTP();
+if ($thumbnailer->isURL())
+{
+  $inpt = $thumbnailer->input;
+}
 
 // IF URL GET ID
 if(substr($inpt, 0, 7) == "http://" OR substr($inpt, 0, 8) == "https://")
