@@ -26,15 +26,6 @@
 
 include './YoutubeThumbnailer.php';
 
-// GET YOUTUBE ID FROM THE SLEW OF YOUTUBE URLS 
-// (FOUND ON STACKEXCHANGE SOMEWHERE)
-function getYouTubeIdFromURL($url) 
-{
-	$pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i';
-	preg_match($pattern, $url, $matches);
-	return isset($matches[1]) ? $matches[1] : false;
-}
-
 
 // PARAMETERS
 $is_url 				= false;
@@ -53,16 +44,7 @@ if ($thumbnailer->isURL())
   $inpt = $thumbnailer->input;
 }
 
-// IF URL GET ID
-if(substr($inpt, 0, 7) == "http://" OR substr($inpt, 0, 8) == "https://")
-{	
-	$is_url = true;
-	$id = getYouTubeIdFromURL($inpt);
-}
-
-
-// IF NOT URL TRY ID AS INPUT
-if(!$is_url) { $id = $inpt; }
+$id = $thumbnailer->getID();
 
 
 // FILENAME
