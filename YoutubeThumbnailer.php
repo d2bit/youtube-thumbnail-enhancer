@@ -9,27 +9,12 @@ class YoutubeThumbnailer
 
   public function addHTTP()
   {
-    $inpt = $this->input;
-
-    if(substr($inpt, 0, 4) == "www.")
+    $pattern = "/^(www\.|youtube\.|youtu\.be)/";
+    if (preg_match($pattern, $this->input))
     {
-      $inpt = "http://" . $inpt;
+      $this->input = "http://" . $this->input;
       $this->isURL = true;
     }
-
-    if(substr($inpt, 0, 8) == "youtube.")
-    {
-      $inpt = "http://" . $inpt;
-      $this->isURL = true;
-    }
-
-    if(substr($inpt, 0, 8) == "youtu.be")
-    {
-      $inpt = "http://" . $inpt;
-      $this->isURL = true;
-    }
-
-    $this->input = $inpt;
 
     return $this;
   }
