@@ -9,8 +9,7 @@ class YoutubeThumbnailer
 
   public function addHTTP()
   {
-    $pattern = "/^(www\.|youtube\.|youtu\.be)/";
-    if (preg_match($pattern, $this->input))
+    if ($this->inputStartsLikeURL())
     {
       $this->input = "http://" . $this->input;
       $this->isURL = true;
@@ -22,5 +21,12 @@ class YoutubeThumbnailer
   public function isURL()
   {
     return $this->isURL;
+  }
+
+  private function inputStartsLikeURL()
+  {
+    $pattern = "/^(www\.|youtube\.|youtu\.be)/";
+
+    return preg_match($pattern, $this->input);
   }
 }
