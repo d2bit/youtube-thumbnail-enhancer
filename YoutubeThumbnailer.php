@@ -34,7 +34,7 @@ class YoutubeThumbnailer
     return isset($matches[1]) ? $matches[1] : false;
   }
 
-  private function addHTTP()
+  private function inputAddHTTP()
   {
     if ($this->inputStartsLikeURL())
     {
