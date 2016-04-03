@@ -4,7 +4,6 @@ class YoutubeThumbnailer
   public function YoutubeThumbnailer($input)
   {
     $this->input = $input;
-    $this->isURL = false;
   }
 
   public function addHTTP()
@@ -12,7 +11,6 @@ class YoutubeThumbnailer
     if ($this->inputStartsLikeURL())
     {
       $this->input = "http://" . $this->input;
-      $this->isURL = true;
     }
 
     return $this;
@@ -20,20 +18,18 @@ class YoutubeThumbnailer
 
   public function isURL()
   {
-    return $this->isURL;
+    $pattern = "/^https?:\/\//";
+    return !!preg_match($pattern, $this->input);
   }
 
   public function getID()
   {
     $inpt = $this->input;
 
-    if(substr($inpt, 0, 7) == "http://" OR substr($inpt, 0, 8) == "https://")
+    if ($this->isURL())
     {
-      $this->isURL = true;
       $id = $this->getYouTubeIdFromURL($inpt);
-    }
-
-    if(!$this->isURL()) {
+    } else {
       $id = $inpt;
     }
 
