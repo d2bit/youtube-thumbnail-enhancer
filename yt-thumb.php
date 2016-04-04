@@ -26,8 +26,12 @@
 
 include './YoutubeThumbnailer.php';
 
-
-$thumbnailer = new YoutubeThumbnailer($_REQUEST['inpt'], $_REQUEST['quality'], $_REQUEST['play']);
+$options = array(
+  'input' => $_REQUEST['inpt'],
+  'quality' => $_REQUEST['quality'],
+  'havePlayBtn' => $_REQUEST['play']
+);
+$thumbnailer = new YoutubeThumbnailer($options);
 $id = $thumbnailer->getID();
 
 $filename = $thumbnailer->getFilename();

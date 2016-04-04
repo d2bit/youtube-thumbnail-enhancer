@@ -1,13 +1,13 @@
 <?php
 class YoutubeThumbnailer
 {
-  public function YoutubeThumbnailer($input, $quality = "mq", $play = false)
+  public function YoutubeThumbnailer($options)
   {
-    $this->input = trim($input);
+    $this->input = trim($options["input"]);
     $this->inputAddHTTP();
 
-    $this->quality = ($quality == "hq") ? "hq" : "mq";
-    $this->play = $play;
+    $this->quality = ($options["quality"] == "hq") ? "hq" : "mq";
+    $this->play = $options["havePlayBtn"];
   }
 
   public function isURL()
