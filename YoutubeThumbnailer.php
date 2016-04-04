@@ -57,10 +57,14 @@ class YoutubeThumbnailer
     return $filename;
   }
 
+  public function getOutputFilename()
+  {
+    return self::FILENAME_FOLDER . $this->getFilename() . self::FILENAME_EXT;
+  }
+
   public function validCachedVersion()
   {
-    $filename = self::FILENAME_FOLDER . $this->getFilename() . self::FILENAME_EXT;
-    $fileExist = $this->fileSystem->file_exists($filename);
+    $fileExist = $this->fileSystem->file_exists($this->getOutputFilename());
     $shouldRefresh = $this->shouldRefresh;
 
     return ($fileExist AND !$shouldRefresh);

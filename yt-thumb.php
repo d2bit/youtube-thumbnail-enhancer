@@ -29,19 +29,18 @@ include './YoutubeThumbnailer.php';
 $options = array(
   'input' => $_REQUEST['inpt'],
   'quality' => $_REQUEST['quality'],
-  'havePlayBtn' => $_REQUEST['play']
+  'havePlayBtn' => $_REQUEST['play'],
+  'shouldRefresh' => $_GET['refresh']
 );
 $thumbnailer = new YoutubeThumbnailer($options);
 $id = $thumbnailer->getID();
 
 $filename = $thumbnailer->getFilename();
 
-
-// IF EXISTS, GO
-if(file_exists("i/" . $filename . ".jpg") AND !isset($_GET['refresh']))
+if($thumbnailer->validCachedVersion())
 {
-	header("Location: i/" . $filename . ".jpg");
-	die;
+  header("Location: " . $thumbnailer->getOutputFilename());
+  die;
 }
 
 
@@ -118,13 +117,13 @@ imagefilledrectangle($output, 0, 0, $imageWidth, $imageHeight, $white);
 imagecopy($output, $input, 0, 0, 0, 0, $imageWidth, $imageHeight);
 
 // OUTPUT TO 'i' FOLDER
-imagejpeg($output, "i/" . $filename . ".jpg", 95);
+imagejpeg($output, $thumbnailer->getOutputFilename(), 95);
 
 // UNLINK PNG VERSION
 @unlink($filename .".png");
 
 // REDIRECT TO NEW IMAGE
-header("Location: i/" . $filename . ".jpg");
+header("Location: " . $thumbnailer->getOutputFilename());
 die;
 
 ?>
