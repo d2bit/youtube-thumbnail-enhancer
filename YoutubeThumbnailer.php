@@ -15,16 +15,12 @@ class YoutubeThumbnailer
 
   public function getID()
   {
-    $inpt = $this->input;
-
-    if ($this->isURL())
+    if (!$this->isURL())
     {
-      $id = $this->getYouTubeIdFromURL();
-    } else {
-      $id = $inpt;
+      return $this->input;
     }
 
-    return $id;
+    return $this->getYouTubeIdFromURL();
   }
 
   private function getYouTubeIdFromURL()
