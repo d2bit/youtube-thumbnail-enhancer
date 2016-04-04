@@ -19,7 +19,7 @@ class YoutubeThumbnailer
 
     if ($this->isURL())
     {
-      $id = $this->getYouTubeIdFromURL($inpt);
+      $id = $this->getYouTubeIdFromURL();
     } else {
       $id = $inpt;
     }
@@ -27,10 +27,10 @@ class YoutubeThumbnailer
     return $id;
   }
 
-  private function getYouTubeIdFromURL($url)
+  private function getYouTubeIdFromURL()
   {
     $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i';
-    preg_match($pattern, $url, $matches);
+    preg_match($pattern, $this->input, $matches);
     return isset($matches[1]) ? $matches[1] : false;
   }
 
