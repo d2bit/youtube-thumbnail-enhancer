@@ -70,6 +70,20 @@ class YoutubeThumbnailer
     return ($fileExist AND !$shouldRefresh);
   }
 
+  public function isValidYouTubeVideo()
+  {
+    $id = $this->getID();
+    $handle = curl_init("https://www.youtube.com/watch/?v=" . $id);
+    curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+    $response = curl_exec($handle);
+
+    $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+    curl_close($handle);
+
+    $invalid = ($httpCode == 404 OR !$response);
+    return !$invalid;
+  }
+
   private function getYouTubeIdFromURL()
   {
     $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i';

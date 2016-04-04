@@ -37,28 +37,17 @@ $id = $thumbnailer->getID();
 
 $filename = $thumbnailer->getFilename();
 
-if($thumbnailer->hasValidCachedVersion())
+if ($thumbnailer->hasValidCachedVersion())
 {
   header("Location: " . $thumbnailer->getOutputFilename());
   die;
 }
 
-
-// CHECK IF YOUTUBE VIDEO
-$handle = curl_init("https://www.youtube.com/watch/?v=" . $id);
-curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-$response = curl_exec($handle);
-
-
-// CHECK FOR 404 OR NO RESPONSE
-$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-if($httpCode == 404 OR !$response) 
+if (!$thumbnailer->isValidYouTubeVideo())
 {
-	header("Status: 404 Not Found");
-	die("No YouTube video found or YouTube timed out. Try again soon."); 
+  header("Status: 404 Not Found");
+  die("No YouTube video found or YouTube timed out. Try again soon."); 
 }
-
-curl_close($handle);
 
 
 // IF NOT ID THROW AN ERROR
