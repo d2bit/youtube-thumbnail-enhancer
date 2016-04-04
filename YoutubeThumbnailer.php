@@ -7,7 +7,7 @@ class YoutubeThumbnailer
   const MEDIUM_QUALITY = "mq";
   const PLAY_BTN = "havePlayBtn";
 
-  const FILENAME_EXTENSIONS = array(
+  const FILENAME_VARIANTS = array(
     self::MEDIUM_QUALITY => "-mq",
     self::PLAY_BTN => "-play"
   );
@@ -48,8 +48,8 @@ class YoutubeThumbnailer
   public function getFilename()
   {
     $filename = $this->getID();
-    $filename .= self::FILENAME_EXTENSIONS[$this->quality];
-    $filename .= self::FILENAME_EXTENSIONS[$this->play];
+    $filename .= self::FILENAME_VARIANTS[$this->quality];
+    $filename .= self::FILENAME_VARIANTS[$this->play];
 
     return $filename;
   }
