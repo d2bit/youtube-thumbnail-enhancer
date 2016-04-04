@@ -35,4 +35,31 @@ class YoutubeThumbnailerTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($youtubeId, $thumbnailer->getID());
   }
+
+  public function testDefaultGetFilename()
+  {
+    $youtubeId = "XZ4X1wcZ1GE";
+    $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
+    $thumbnailer = new YoutubeThumbnailer($httpUrl);
+
+    $this->assertEquals($youtubeId . "-mq", $thumbnailer->getFilename());
+  }
+
+  public function testHQGetFilename()
+  {
+    $youtubeId = "XZ4X1wcZ1GE";
+    $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
+    $thumbnailer = new YoutubeThumbnailer($httpUrl, "hq");
+
+    $this->assertEquals($youtubeId, $thumbnailer->getFilename());
+  }
+
+  public function testPlayButtonGetFilename()
+  {
+    $youtubeId = "XZ4X1wcZ1GE";
+    $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
+    $thumbnailer = new YoutubeThumbnailer($httpUrl, false, true);
+
+    $this->assertEquals($youtubeId . "-mq" . "-play", $thumbnailer->getFilename());
+  }
 }

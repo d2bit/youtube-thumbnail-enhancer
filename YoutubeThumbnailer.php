@@ -1,10 +1,13 @@
 <?php
 class YoutubeThumbnailer
 {
-  public function YoutubeThumbnailer($input)
+  public function YoutubeThumbnailer($input, $quality = "mq", $play = false)
   {
     $this->input = trim($input);
     $this->inputAddHTTP();
+
+    $this->quality = ($quality == "hq") ? "hq" : "mq";
+    $this->play = $play;
   }
 
   public function isURL()
@@ -21,6 +24,17 @@ class YoutubeThumbnailer
     }
 
     return $this->getYouTubeIdFromURL();
+  }
+
+  public function getFilename()
+  {
+    $play_btn_file_name = ($this->play) ? "-play" : "";
+    $id = $this->getID();
+
+    $filename = ($this->quality == "mq") ? $id . "-mq": $id;
+    $filename .= $play_btn_file_name;
+
+    return $filename;
   }
 
   private function getYouTubeIdFromURL()

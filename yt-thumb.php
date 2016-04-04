@@ -27,21 +27,10 @@
 include './YoutubeThumbnailer.php';
 
 
-// PARAMETERS
-$is_url 				= false;
-$quality 				= $_REQUEST['quality'];
-$quality 				= ($quality == "hq") ? "hq" : "mq";
-$show_play_icon			= isset($_REQUEST['play']) ? true : false;
-$play_btn_file_name 	= ($show_play_icon) ? "-play" : "";
-
-
-$thumbnailer = new YoutubeThumbnailer($_REQUEST['inpt']);
+$thumbnailer = new YoutubeThumbnailer($_REQUEST['inpt'], $_REQUEST['quality'], $_REQUEST['play']);
 $id = $thumbnailer->getID();
 
-
-// FILENAME
-$filename = ($quality == "mq") ? $id . "-mq": $id;
-$filename .= $play_btn_file_name;
+$filename = $thumbnailer->getFilename();
 
 
 // IF EXISTS, GO
@@ -78,11 +67,11 @@ if(!$id)
 
 
 // CREATE IMAGE FROM YOUTUBE THUMB
-$image = imagecreatefromjpeg( "http://img.youtube.com/vi/" . $id . "/" . $quality . "default.jpg" );
+$image = imagecreatefromjpeg( "http://img.youtube.com/vi/" . $id . "/" . $thumbnailer->quality . "default.jpg" );
 
 
 // IF HIGH QUALITY WE CREATE A NEW CANVAS WITHOUT THE BLACK BARS
-if($quality == "hq")
+if($thumbnailer->quality == "hq")
 {
 	$cleft = 0;
 	$ctop = 45;
@@ -98,8 +87,8 @@ $imageHeight 	= imagesy($image);
 
 
 // ADD THE PLAY ICON
-$play_icon = $show_play_icon ? "play-" : "noplay-";
-$play_icon .= $quality . ".png";
+$play_icon = $thumbnailer->play ? "play-" : "noplay-";
+$play_icon .= $thumbnailer->quality . ".png";
 $logoImage = imagecreatefrompng( $play_icon );
 
 imagealphablending($logoImage, true);
