@@ -33,7 +33,6 @@ $options = array(
   'shouldRefresh' => $_GET['refresh']
 );
 $thumbnailer = new YoutubeThumbnailer($options);
-$id = $thumbnailer->getID();
 
 if ($thumbnailer->hasValidCachedVersion())
 {
@@ -47,7 +46,7 @@ if (!$thumbnailer->isValidYouTubeVideo())
   die("No YouTube video found or YouTube timed out. Try again soon.");
 }
 
-if(!$id)
+if(!$thumbnailer->getID())
 {
   header("Status: 404 Not Found");
   die("YouTube ID not found");
