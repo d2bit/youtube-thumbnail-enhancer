@@ -90,6 +90,33 @@ class YoutubeThumbnailer
     $id = $this->getID();
 
     $image = $this->getImageFromYouTube();
+    $image = getImageWithLogo($image);
+
+    $this->persistImage($image);
+  }
+
+  private function persistImage($image)
+  {
+    $pngFilename = $this->getFilename() . ".png";
+
+    imagepng($image, $pngFilename, 9);
+
+    $imageWidth = imagesx($image);
+    $imageHeight = imagesy($image);
+
+    $input = imagecreatefrompng($pngFilename);
+    $output = imagecreatetruecolor($imageWidth, $imageHeight);
+    $white = imagecolorallocate($output,  255, 255, 255);
+    imagefilledrectangle($output, 0, 0, $imageWidth, $imageHeight, $white);
+    imagecopy($output, $input, 0, 0, 0, 0, $imageWidth, $imageHeight);
+
+    imagejpeg($output, $thumbnailer->getOutputFilename(), 95);
+
+    @unlink($pngFilename);
+  }
+
+  private function getImageWithLogo($image)
+  {
     $imageWidth = imagesx($image);
     $imageHeight = imagesy($image);
 
@@ -97,26 +124,12 @@ class YoutubeThumbnailer
     $logoWidth = imagesx($logoImage);
     $logoHeight = imagesy($logoImage);
 
-    // CENTER PLAY ICON
     $left = round($imageWidth / 2) - round($logoWidth / 2);
     $top = round($imageHeight / 2) - round($logoHeight / 2);
 
-    // CONVERT TO PNG SO WE CAN GET THAT PLAY BUTTON ON THERE
     imagecopy($image, $logoImage, $left, $top, 0, 0, $logoWidth, $logoHeight);
-    imagepng($image, $filename .".png", 9);
 
-    // MASHUP FINAL IMAGE AS A JPEG
-    $input = imagecreatefrompng($filename .".png");
-    $output = imagecreatetruecolor($imageWidth, $imageHeight);
-    $white = imagecolorallocate($output,  255, 255, 255);
-    imagefilledrectangle($output, 0, 0, $imageWidth, $imageHeight, $white);
-    imagecopy($output, $input, 0, 0, 0, 0, $imageWidth, $imageHeight);
-
-    // OUTPUT TO 'i' FOLDER
-    imagejpeg($output, $thumbnailer->getOutputFilename(), 95);
-
-    // UNLINK PNG VERSION
-    @unlink($filename .".png");
+    return $image;
   }
 
   private function getLogoImage()
