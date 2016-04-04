@@ -75,4 +75,53 @@ class YoutubeThumbnailerTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($youtubeId . "-mq" . "-play", $thumbnailer->getFilename());
   }
+
+  public function testValidCachedVersionNoExistentFile()
+  {
+    $youtubeId = "XZ4X1wcZ1GE";
+    $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
+    $options = array(
+      "input" => $httpUrl
+    );
+    $thumbnailer = new YoutubeThumbnailer($options);
+
+    $stub = $this->getMockBuilder("FileSystem")->getMock();
+    $stub->method("file_exists")->willReturn(false);
+    $thumbnailer->injectFileSystem($stub);
+
+    $this->assertFalse($thumbnailer->validCachedVersion());
+  }
+
+  public function testValidCachedVersionExistentFile()
+  {
+    $youtubeId = "XZ4X1wcZ1GE";
+    $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
+    $options = array(
+      "input" => $httpUrl
+    );
+    $thumbnailer = new YoutubeThumbnailer($options);
+
+    $stub = $this->getMockBuilder("FileSystem")->getMock();
+    $stub->method("file_exists")->willReturn(true);
+    $thumbnailer->injectFileSystem($stub);
+
+    $this->assertTrue($thumbnailer->validCachedVersion());
+  }
+
+  public function testValidCachedVersionExistentFileWithRefreshFlag()
+  {
+    $youtubeId = "XZ4X1wcZ1GE";
+    $httpUrl = "http://www.youtube.com/watch?v=" . $youtubeId;
+    $options = array(
+      "input" => $httpUrl,
+      "shouldRefresh" => true
+    );
+    $thumbnailer = new YoutubeThumbnailer($options);
+
+    $stub = $this->getMockBuilder("FileSystem")->getMock();
+    $stub->method("file_exists")->willReturn(true);
+    $thumbnailer->injectFileSystem($stub);
+
+    $this->assertFalse($thumbnailer->validCachedVersion());
+  }
 }

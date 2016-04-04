@@ -1,4 +1,6 @@
 <?php
+include "./FileSystem.php";
+
 class YoutubeThumbnailer
 {
   const HIGH_QUALITY = "hq";
@@ -12,11 +14,19 @@ class YoutubeThumbnailer
 
   public function YoutubeThumbnailer($options)
   {
+    $this->fileSystem = new FileSystem();
+
     $this->input = trim($options["input"]);
     $this->inputAddHTTP();
 
     $this->quality = ($options["quality"] == self::HIGH_QUALITY) ?  self::HIGH_QUALITY : self::MEDIUM_QUALITY;
     $this->play = ($options["havePlayBtn"]) ? self::PLAY_BTN : "";
+    $this->shouldRefresh = $options["shouldRefresh"];
+  }
+
+  public function injectFileSystem(FileSystem $fileSystem)
+  {
+    $this->fileSystem = $fileSystem;
   }
 
   public function isURL()
@@ -42,6 +52,15 @@ class YoutubeThumbnailer
     $filename .= self::FILENAME_EXTENSIONS[$this->play];
 
     return $filename;
+  }
+
+  public function validCachedVersion()
+  {
+    $filename = "i/" . $this->getFilename() . ".jpg";
+    $fileExist = $this->fileSystem->file_exists($filename);
+    $shouldRefresh = $this->shouldRefresh;
+
+    return ($fileExist AND !$shouldRefresh);
   }
 
   private function getYouTubeIdFromURL()
