@@ -62,7 +62,7 @@ class YoutubeThumbnailer
     return self::FILENAME_FOLDER . $this->getFilename() . self::FILENAME_EXT;
   }
 
-  public function validCachedVersion()
+  public function hasValidCachedVersion()
   {
     $fileExist = $this->fileSystem->file_exists($this->getOutputFilename());
     $shouldRefresh = $this->shouldRefresh;

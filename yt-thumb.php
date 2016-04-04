@@ -37,7 +37,7 @@ $id = $thumbnailer->getID();
 
 $filename = $thumbnailer->getFilename();
 
-if($thumbnailer->validCachedVersion())
+if($thumbnailer->hasValidCachedVersion())
 {
   header("Location: " . $thumbnailer->getOutputFilename());
   die;
