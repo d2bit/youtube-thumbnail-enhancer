@@ -3,6 +3,12 @@ class YoutubeThumbnailer
 {
   const HIGH_QUALITY = "hq";
   const MEDIUM_QUALITY = "mq";
+  const PLAY_BTN = "havePlayBtn";
+
+  const FILENAME_EXTENSIONS = array(
+    self::MEDIUM_QUALITY => "-mq",
+    self::PLAY_BTN => "-play"
+  );
 
   public function YoutubeThumbnailer($options)
   {
@@ -10,7 +16,7 @@ class YoutubeThumbnailer
     $this->inputAddHTTP();
 
     $this->quality = ($options["quality"] == self::HIGH_QUALITY) ?  self::HIGH_QUALITY : self::MEDIUM_QUALITY;
-    $this->play = $options["havePlayBtn"];
+    $this->play = ($options["havePlayBtn"]) ? self::PLAY_BTN : "";
   }
 
   public function isURL()
@@ -31,11 +37,9 @@ class YoutubeThumbnailer
 
   public function getFilename()
   {
-    $play_btn_file_name = ($this->play) ? "-play" : "";
-    $id = $this->getID();
-
-    $filename = ($this->quality == self::MEDIUM_QUALITY) ? $id . "-" . self::MEDIUM_QUALITY : $id;
-    $filename .= $play_btn_file_name;
+    $filename = $this->getID();
+    $filename .= self::FILENAME_EXTENSIONS[$this->quality];
+    $filename .= self::FILENAME_EXTENSIONS[$this->play];
 
     return $filename;
   }
