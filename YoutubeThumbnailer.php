@@ -1,12 +1,15 @@
 <?php
 class YoutubeThumbnailer
 {
+  const HIGH_QUALITY = "hq";
+  const MEDIUM_QUALITY = "mq";
+
   public function YoutubeThumbnailer($options)
   {
     $this->input = trim($options["input"]);
     $this->inputAddHTTP();
 
-    $this->quality = ($options["quality"] == "hq") ? "hq" : "mq";
+    $this->quality = ($options["quality"] == self::HIGH_QUALITY) ?  self::HIGH_QUALITY : self::MEDIUM_QUALITY;
     $this->play = $options["havePlayBtn"];
   }
 
@@ -31,7 +34,7 @@ class YoutubeThumbnailer
     $play_btn_file_name = ($this->play) ? "-play" : "";
     $id = $this->getID();
 
-    $filename = ($this->quality == "mq") ? $id . "-mq": $id;
+    $filename = ($this->quality == self::MEDIUM_QUALITY) ? $id . "-" . self::MEDIUM_QUALITY : $id;
     $filename .= $play_btn_file_name;
 
     return $filename;
