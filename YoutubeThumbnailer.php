@@ -90,17 +90,10 @@ class YoutubeThumbnailer
     $id = $this->getID();
 
     $image = $this->getImageFromYouTube();
-
     $imageWidth = imagesx($image);
     $imageHeight = imagesy($image);
 
-    // ADD THE PLAY ICON
-    $play_icon = $this->play ? "play-" : "noplay-";
-    $play_icon .= $this->quality . ".png";
-    $logoImage = imagecreatefrompng($play_icon);
-
-    imagealphablending($logoImage, true);
-
+    $logoImage = $this->getLogoImage();
     $logoWidth = imagesx($logoImage);
     $logoHeight = imagesy($logoImage);
 
@@ -124,6 +117,22 @@ class YoutubeThumbnailer
 
     // UNLINK PNG VERSION
     @unlink($filename .".png");
+  }
+
+  private function getLogoImage()
+  {
+    $image = imagecreatefrompng($this->getLogoFilename());
+    imagealphablending($image, true);
+
+    return $image;
+  }
+
+  private function getLogoFilename()
+  {
+    $filename = $this->play ? "play-" : "noplay-";
+    $filename .= $this->quality . ".png";
+
+    return $filename;
   }
 
   private function getImageFromYouTube()
