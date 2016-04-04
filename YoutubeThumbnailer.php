@@ -89,18 +89,7 @@ class YoutubeThumbnailer
     $filename = $this->getFilename();
     $id = $this->getID();
 
-    // CREATE IMAGE FROM YOUTUBE THUMB
-    $image = imagecreatefromjpeg("http://img.youtube.com/vi/" . $id . "/" . $this->quality . "default.jpg");
-
-    // IF HIGH QUALITY WE CREATE A NEW CANVAS WITHOUT THE BLACK BARS
-    if($this->quality == "hq")
-    {
-      $cleft = 0;
-      $ctop = 45;
-      $canvas = imagecreatetruecolor(480, 270);
-      imagecopy($canvas, $image, 0, 0, $cleft, $ctop, 480, 360);
-      $image = $canvas;
-    }
+    $image = $this->getImageFromYouTube();
 
     $imageWidth = imagesx($image);
     $imageHeight = imagesy($image);
@@ -135,6 +124,24 @@ class YoutubeThumbnailer
 
     // UNLINK PNG VERSION
     @unlink($filename .".png");
+  }
+
+  private function getImageFromYouTube()
+  {
+    $youtubeURL = "http://img.youtube.com/vi/" . $this->getID() . "/" . $this->quality . "default.jpg";
+    $image = imagecreatefromjpeg($youtubeURL);
+
+    // IF HIGH QUALITY WE CREATE A NEW CANVAS WITHOUT THE BLACK BARS
+    if($this->quality == self::HIGH_QUALITY)
+    {
+      $cleft = 0;
+      $ctop = 45;
+      $canvas = imagecreatetruecolor(480, 270);
+      imagecopy($canvas, $image, 0, 0, $cleft, $ctop, 480, 360);
+      $image = $canvas;
+    }
+
+    return $image
   }
 
   private function getYouTubeIdFromURL()
