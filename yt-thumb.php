@@ -46,15 +46,13 @@ if ($thumbnailer->hasValidCachedVersion())
 if (!$thumbnailer->isValidYouTubeVideo())
 {
   header("Status: 404 Not Found");
-  die("No YouTube video found or YouTube timed out. Try again soon."); 
+  die("No YouTube video found or YouTube timed out. Try again soon.");
 }
 
-
-// IF NOT ID THROW AN ERROR
-if(!$id) 
+if(!$id)
 {
-	header("Status: 404 Not Found");
-	die("YouTube ID not found");
+  header("Status: 404 Not Found");
+  die("YouTube ID not found");
 }
 
 
