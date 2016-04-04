@@ -12,6 +12,9 @@ class YoutubeThumbnailer
     self::PLAY_BTN => "-play"
   );
 
+  const FILENAME_EXT = ".jpg";
+  const FILENAME_FOLDER = "i/";
+
   public function YoutubeThumbnailer($options)
   {
     $this->fileSystem = new FileSystem();
@@ -56,7 +59,7 @@ class YoutubeThumbnailer
 
   public function validCachedVersion()
   {
-    $filename = "i/" . $this->getFilename() . ".jpg";
+    $filename = self::FILENAME_FOLDER . $this->getFilename() . self::FILENAME_EXT;
     $fileExist = $this->fileSystem->file_exists($filename);
     $shouldRefresh = $this->shouldRefresh;
 
