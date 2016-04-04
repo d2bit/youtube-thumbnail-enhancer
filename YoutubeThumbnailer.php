@@ -131,17 +131,22 @@ class YoutubeThumbnailer
     $youtubeURL = "http://img.youtube.com/vi/" . $this->getID() . "/" . $this->quality . "default.jpg";
     $image = imagecreatefromjpeg($youtubeURL);
 
-    // IF HIGH QUALITY WE CREATE A NEW CANVAS WITHOUT THE BLACK BARS
     if($this->quality == self::HIGH_QUALITY)
     {
-      $cleft = 0;
-      $ctop = 45;
-      $canvas = imagecreatetruecolor(480, 270);
-      imagecopy($canvas, $image, 0, 0, $cleft, $ctop, 480, 360);
-      $image = $canvas;
+      $image = removeBlackBarsFromImage($image);
     }
 
     return $image
+  }
+
+  private function removeBlackBarsFromImage($image)
+  {
+    $cleft = 0;
+    $ctop = 45;
+    $canvas = imagecreatetruecolor(480, 270);
+    imagecopy($canvas, $image, 0, 0, $cleft, $ctop, 480, 360);
+
+    return $canvas;
   }
 
   private function getYouTubeIdFromURL()
